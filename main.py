@@ -68,9 +68,29 @@ class TestRecord:
         document.write(date.strftime('%c'))
 
     def check_if_coorect(self, pinyin_answer, yindiao_answer):
+        pinyin1 = pinyin_answer[0]
+        pinyin2 = '    '
+        pinyinentry = pinyin_entry.get()
+        if len(pinyin_answer) == 2:  
+            pinyin2 = pinyin_answer[1]
+
         if pinyin_entry.get() in pinyin_answer and yindiao_entry.get() in yindiao_answer:
             self.passed = 'pass'
             return True
+
+        elif pinyin1[-3:] == 'ing' or pinyin2[-3:] == 'ing':
+            if pinyinentry[-2:] == 'in':
+                
+                if yindiao_entry.get() in yindiao_answer:
+                    self.passed = 'pass'
+                    return True
+
+        elif pinyin1[-2:] == 'in' or pinyin2[-2:] == 'in':
+            if pinyinentry[-3:] == 'ing':
+
+                if yindiao_entry.get() in yindiao_answer:
+                    self.passed = 'pass'
+                    return True
         
         else:
             self.passed = 'fail'
