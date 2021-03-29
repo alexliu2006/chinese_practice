@@ -1,12 +1,3 @@
-# need duo yin zi
-#kong1 kong4
-#jia4 jia3
-#zuan1 zuan4
-#shan1 shan4
-#bo2 bao2
-
-
-
 from tkinter import*
 import random
 import datetime
@@ -91,7 +82,19 @@ class TestRecord:
                 if yindiao_entry.get() in yindiao_answer:
                     self.passed = 'pass'
                     return True
-        
+        elif pinyin1[-2:] == 'en' or pinyin2[-2:] == 'en':
+            if pinyinentry[-3:] == 'eng':
+                if yindiao_entry.get() in yindiao_answer:
+                    self.passed = 'pass'
+                    return True
+
+        elif pinyin1[-3:] == 'eng' or pinyin2[-3:] == 'eng':
+            if pinyinentry[-2:] == 'en':
+                
+                if yindiao_entry.get() in yindiao_answer:
+                    self.passed = 'pass'
+                    return True
+
         else:
             self.passed = 'fail'
             return False
@@ -197,7 +200,7 @@ def sort_percentages(dictionaryOfAnswers, dictionary, daysAgo_dictionary):
                 number_of_trys = number_of_trys + 1
 
         percentage = float(  
-            (number_pass - number_fail)-((daysAgo_dictionary[key]+1)/15)  
+            (number_pass - number_fail)-((daysAgo_dictionary[key]+1)/13)  
                           )
         percentage_dictionary[key] = percentage
 
@@ -215,8 +218,8 @@ a = read_dictionary()
 dictionary_of_answers = groupby(read_dictionary())
 dictionary = groupby(read_history())
 percentage_list = sort_percentages(dictionary_of_answers,dictionary, daysAgo_dictionary)
-
 def next_word():
+    global Chinese_word_label4
     global count
     Chinese_Word_Variable2.set('')
     Chinese_Word_Variable3.set('')
@@ -250,6 +253,9 @@ def next_word():
     if current_word.character != '' and pinyin_entry.get() != "":
         count_Word_variable.set(str(count))
         count = count + 1
+
+        if count > 50:
+            Chinese_word_label4.config(fg="Green", font=('KaiTi', 200))
         
 
         if current_word.check_if_coorect(pinyin_answer, str(yindiao_answer)):
@@ -276,15 +282,22 @@ def next_word():
 app = Tk()
 app.title('Chinese Pratice')
 app.geometry('1000x640')                                                        #, height=12, padx = 470
-btn = Button(app, text='next word', command=next_word, font=('Noto Sans SC', 40), padx = 550, height=3).grid(row=0, sticky=W)
+btn = Button(app, text='next word', command=next_word, font=('KaiTi', 40), padx = 550, height=3).grid(row=0, sticky=W)
 Chinese_Word_Variable = StringVar()
 Chinese_Word_Variable2 = StringVar()
 Chinese_Word_Variable3 = StringVar()
+
+
+
 count_Word_variable = StringVar()
-Chinese_Word_Label = Label(app, textvariable=Chinese_Word_Variable, padx = 20, font=('Noto Sans SC', 30)).grid(row=1, column=0)
+global Chinese_word_label4
+Chinese_word_label4 = Label(app, textvariable = count_Word_variable, padx = 20, font=('Noto Sans SC', 20))
+Chinese_word_label4.grid(row=6)
+Chinese_Word_Label = Label(app, textvariable=Chinese_Word_Variable, padx = 20, font=('KaiTi', 40)).grid(row=1, column=0)
 Chinese_Word_Label2 = Label(app, textvariable=Chinese_Word_Variable2, padx = 20, font=('Noto Sans SC', 15)).grid(row=2)
 Chinese_Word_Label3 = Label(app, textvariable=Chinese_Word_Variable3, padx = 20, font=('Noto Sans SC', 15)).grid(row=3)
-Chinese_word_label4 = Label(app, textvariable = count_Word_variable, padx = 20, font=('Noto Sans SC', 15)).grid(row=6)
+
+
 # Chinese_Word_Label.config(width=200, fontsize=50)
 #Chinese_Word_Variable.set(current_word.character)
 
